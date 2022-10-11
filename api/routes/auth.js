@@ -3,7 +3,7 @@ import express from "express";
 const router = express.Router();
 
 router.get("/",(req ,res) =>{
-    res.send ("Hello ,this is auth endpoint")
+    res.status(200).json({message: "welcome to Auth"})
 })
 
 export default router

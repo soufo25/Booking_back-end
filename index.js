@@ -1,26 +1,30 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import bodyParser from "body-parser"
 import authRoute from "./api/routes/auth.js";
 import hotelsRoute from "./api/routes/hotels.js";
 import usersRoute from "./api/routes/users.js";
 import roomsRoute from "./api/routes/rooms.js";
-
+const port = process.env.port || 5000
+dotenv.config({path: './config.env'})
 
 
 const app = express();
-dotenv.config();
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 mongoose.connect(
     process.env.MONGO,
     { useNewUrlParser: true, useUnifiedTopology: true },
-    (c) => console.log("Connected to db")
+    () => console.log("Connected to db")
   );
   
 //Middleware
+app.get("/", (req, res) => {
+  res.status(200).json({message: "welcome to Api"})
+})
+
+ 
 
 
 app.use("/api/auth", authRoute);
@@ -30,6 +34,6 @@ app.use("/api/rooms", roomsRoute);
 
 
 
-app.listen(8800, () => {
-    console.log("Connected to backend.");
+app.listen(port, () => {
+  console.log(`running on http://localhost:${port}.`);
   });
